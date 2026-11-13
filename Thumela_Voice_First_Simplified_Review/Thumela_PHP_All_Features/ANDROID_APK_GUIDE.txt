@@ -1,0 +1,51 @@
+THUMELA ANDROID APK + INSTALL GUIDE
+===================================
+
+WHAT IS INCLUDED
+- A simplified, voice-first Thumela web app.
+- PWA manifest + service worker for browser installation where supported.
+- Capacitor configuration to generate a native Android project.
+- PHP/MySQL backend remains in /backend and /database.
+
+IMPORTANT BACKEND REQUIREMENT
+The PHP backend cannot execute inside the Android WebView as local static files.
+For an APK that can register users and access wallet data, deploy the PHP backend
+to an HTTPS server and edit backend-config.js so THUMELA_API_BASE points to:
+https://YOUR-DOMAIN/backend/api
+Configure the PHP API for the app's origin, HTTPS, credentialed CORS and secure
+session cookies. Do not use localhost in the APK: on a phone, localhost means the phone.
+The browser/XAMPP version can leave THUMELA_API_BASE empty.
+
+BUILD THE APK (Windows)
+1. Install Node.js LTS and Android Studio. Install Android SDK + platform tools.
+2. Open this folder in a terminal.
+3. Run: npm install
+4. Run: npx cap add android
+5. Run: npx cap sync android
+6. Run: npx cap open android
+7. In Android Studio, wait for Gradle sync. Choose Build > Build Bundle(s) / APK(s) > Build APK(s).
+8. Android Studio will show the APK location (usually android/app/build/outputs/apk/debug/app-debug.apk).
+9. Copy the built APK to your hosted website, for example /downloads/thumela.apk,
+   and add a download link to your website when you are ready to distribute it.
+
+INSTALL FROM THE WEB APP
+On supported Android browsers, the Install app button appears when the browser
+confirms the app is installable. Otherwise use the browser menu > Install app /
+Add to Home screen. This installs the PWA, not the APK.
+
+VOICE + ACCESSIBILITY NOTES
+- Voice input is user-activated for privacy; the mic does not secretly listen in the
+  background. It pauses while Thumela speaks and resumes during an active session.
+- Speech recognition and African-language voices depend on the device/browser.
+- The user can say Stop to interrupt voice output. A visible Stop voice button remains.
+- Android power/volume side buttons are reserved by the operating system and cannot
+  reliably be intercepted by an ordinary app. Use accessible on-screen controls or
+  Android accessibility/headset controls instead.
+
+FINANCIAL SAFETY
+The included payment flow is a demo. Do not connect real funds until recipient
+verification, authentication, transaction signing, fraud controls and production
+provider/blockchain integrations have been implemented and independently tested.
+
+THIS ZIP IS AN ANDROID-READY SOURCE PROJECT, NOT A PREBUILT APK. A compiled APK
+requires Android Studio/Android SDK and a configured backend endpoint.

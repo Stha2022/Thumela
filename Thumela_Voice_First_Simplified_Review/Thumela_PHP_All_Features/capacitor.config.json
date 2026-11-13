@@ -1,0 +1,9 @@
+{
+  "appId": "za.co.thumela.finance",
+  "appName": "Thumela",
+  "webDir": ".",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": false
+  }
+}
