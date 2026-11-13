@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102b28">
+<title>Thumela — Accessible Agentic Finance</title>
+<style>
+:root{--bg:#f3f7f5;--panel:#fff;--ink:#142b28;--muted:#60736e;--line:#dce7e2;--brand:#087b66;--brand2:#dff4ed;--gold:#f4c76b;--danger:#a63838;--dangerbg:#fff0ef;--shadow:0 12px 34px #143b2c12}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padding:12px 16px;background:var(--brand);color:white;font-weight:700}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #e5a82e;outline-offset:3px}
+button.secondary{background:var(--brand2);color:var(--ink)}button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}button.danger{background:var(--danger)}button:disabled{opacity:.45;cursor:not-allowed}
+.skip{position:absolute;left:-9999px}.skip:focus{left:12px;top:12px;background:#fff;padding:10px;z-index:5}
+header{background:#102b28;color:#fff;padding:18px max(18px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:44px;height:44px;border-radius:14px;background:#b8edda;color:#102b28;display:grid;place-items:center;font-weight:900;font-size:22px}.brand h1{font-size:22px;line-height:1.1;margin:0}.brand p{margin:3px 0 0;color:#c5ddd5;font-size:12px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}.top-actions[hidden]{display:none!important}.top-actions button{background:#23443e;color:#fff;border:1px solid #45665d}
+main{max-width:1120px;margin:24px auto;padding:0 18px 50px}.notice{background:#fff7df;border:1px solid #f1dfaa;border-radius:14px;padding:12px 15px;color:#59491e;font-size:13px;margin-bottom:18px}
+.layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(290px,.85fr);gap:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.card h2{margin:0 0 5px;font-size:20px}.muted{color:var(--muted)}.small{font-size:13px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:800;color:var(--brand)}
+.balance{display:flex;justify-content:space-between;gap:16px;align-items:center;margin:16px 0}.amount{font-size:36px;font-weight:850;letter-spacing:-.04em}.amount span{font-size:15px;color:var(--muted);letter-spacing:0}
+.quick{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.quick button{min-height:76px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;text-align:left}.quick button b{font-size:15px}.quick button span{font-size:12px;font-weight:500;opacity:.8}
+.voicebox{background:#102b28;color:white;border-radius:18px;padding:20px;margin-top:18px}.voicehead{display:flex;align-items:center;justify-content:space-between;gap:12px}.voicebox h2{font-size:19px}.voicebox p{color:#c8ded6;margin:5px 0 14px;font-size:13px}.microw{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.voice-primary{width:100%;min-height:68px;border-radius:16px;background:#b8edda;color:#102b28;font-size:18px;font-weight:800}.voice-primary.listening{background:#ffdf9b;box-shadow:0 0 0 7px #ffffff22}.text-fallback{margin-top:10px}.voice-help{color:#d8eee6;font-size:13px;line-height:1.6;margin:10px 0}.mic{width:64px;height:64px;border-radius:50%;background:#b8edda;color:#102b28;font-size:26px;display:grid;place-items:center}.mic.listening{background:#ffdf9b;box-shadow:0 0 0 9px #ffffff20}.voicebox .secondary{background:#31564c;color:#fff}.voicebox input{flex:1;min-width:180px;border:1px solid #58756c;background:#173a33;color:#fff;border-radius:12px;padding:13px}.voicebox input::placeholder{color:#c3d5cf}.status{margin-top:12px;min-height:24px;color:#d8f4e8;font-size:13px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:125px}.plan{margin-top:16px;background:#f4f8f6;border:1px solid var(--line);border-radius:14px;padding:14px}.plan h3{margin:0 0 8px;font-size:15px}.plan ol{margin:0;padding-left:22px}.plan li{margin:5px 0}.tool{font-family:ui-monospace,monospace;font-size:12px;background:#eaf3ef;padding:3px 6px;border-radius:6px}
+.side{display:flex;flex-direction:column;gap:18px}.featurelist{list-style:none;padding:0;margin:12px 0 0}.featurelist li{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.featurelist li:last-child{border:0}.check{color:var(--brand);font-weight:900}.activity{display:flex;flex-direction:column;gap:9px;margin-top:12px}.tx{padding:11px;border:1px solid var(--line);border-radius:12px;display:flex;justify-content:space-between;gap:12px}.tx strong{display:block}.pill{font-size:11px;font-weight:800;border-radius:99px;padding:4px 8px;background:#fff1d1;color:#72520c;white-space:nowrap;height:max-content}.pill.success{background:#e1f6e9;color:#17653b}.pill.failed{background:#ffe8e7;color:#9b2828}
+label{font-size:13px;font-weight:700;display:block;margin:12px 0 5px}input,select{width:100%;border:1px solid #cbd9d3;border-radius:12px;padding:12px;background:#fff;color:var(--ink)}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modal{position:fixed;inset:0;background:#071c18aa;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.open{display:flex}.dialog{max-width:520px;width:100%;background:white;color:var(--ink);border-radius:20px;padding:22px;max-height:90vh;overflow:auto}.dialog h2{margin-top:0}.summary{background:#f3f8f5;border-radius:14px;padding:14px;margin:14px 0}.warning{color:var(--danger);background:var(--dangerbg);padding:10px;border-radius:10px;font-size:13px}
+footer{max-width:1120px;margin:0 auto;padding:0 18px 26px;color:var(--muted);font-size:12px}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}.side .card:last-child{grid-column:1/-1}}
+@media(max-width:520px){header{align-items:flex-start;flex-direction:column}.top-actions{width:100%}.top-actions button{flex:1}.side{display:flex}.quick{grid-template-columns:1fr 1fr}.balance{align-items:flex-start;flex-direction:column}.amount{font-size:32px}.grid2{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.auth-shell{max-width:520px;margin:38px auto;padding:0 18px 40px}
+.auth-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;box-shadow:var(--shadow)}
+.auth-card h2{margin:4px 0}.auth-tabs{display:flex;gap:8px;margin:18px 0}.auth-tabs button{flex:1}
+.auth-tabs button.active{background:#102b28;color:#fff}.auth-form{display:none}.auth-form.active{display:block}
+.auth-error{color:#9b2828;background:#fff0ef;border-radius:10px;padding:10px;margin-top:12px;font-size:13px}
+.auth-success{color:#17653b;background:#e1f6e9;border-radius:10px;padding:10px;margin-top:12px;font-size:13px}
+.user-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.user-tools span{color:#d6e9e2;font-size:13px}
+#appContent[hidden],#authShell[hidden],#topActions[hidden],#textMode[hidden]{display:none!important}
+
+.feature-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+.feature-grid .card{min-width:0}
+.smallbtn{margin-top:12px;padding:10px 14px}
+.feature-grid .activity{max-height:240px;overflow:auto}
+.plan{overflow-wrap:anywhere}
+@media(max-width:780px){.feature-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<header>
+ <div class="brand"><div class="logo" aria-hidden="true">T</div><div><h1>Thumela</h1><p>Accessible Agentic Finance</p></div></div>
+ <div class="top-actions" id="topActions" hidden><span id="userGreeting" style="color:#d6e9e2;font-size:13px"></span><button id="logoutButton" type="button" class="secondary">Log out</button><button id="readPage" type="button" aria-label="Read page summary aloud">🔊 Read page</button><button id="stopSpeech" type="button" class="secondary">■ Stop voice</button></div>
+</header>
+<section class="auth-shell" id="authShell" aria-labelledby="authTitle">
+ <div class="auth-card">
+  <div class="eyebrow">Welcome to Thumela</div>
+  <h2 id="authTitle">Your money. Your voice. Your control.</h2>
+  <p class="muted small">Sign in to your personal accessible wallet, or create an account to get started.</p>
+  <label for="authLanguage">Language / Ulimi / Ulwimi / Taal</label>
+  <select id="authLanguage" aria-label="Choose language for Thumela">
+  <option value="en-ZA">English (South Africa)</option><option value="af-ZA">Afrikaans</option><option value="zu-ZA">isiZulu</option><option value="xh-ZA">isiXhosa</option><option value="st-ZA">Sesotho</option><option value="tn-ZA">Setswana</option><option value="nso-ZA">Sepedi</option><option value="ts-ZA">itsonga</option><option value="ve-ZA">Tshivenda (device voice)</option><option value="ss-ZA">siSwati</option><option value="nr-ZA">isiNdebele (device voice)</option><option value="sn-ZW">Shona</option><option value="en-NG">Nigerian English</option>
+  </select>
+<button type="button" class="secondary" id="authSpeakHelp" style="margin:10px 0">🔊 Hear sign-in instructions</button>
+<p class="muted small">For privacy, do not speak your password aloud in a public place. Use your device password manager or screen reader to complete sign-in. A voice match alone is not secure identity verification.</p>
+  <div class="auth-tabs" role="tablist" aria-label="Account access">
+   <button type="button" id="showLogin" class="active" role="tab" aria-selected="true">Log in</button>
+   <button type="button" id="showRegister" class="secondary" role="tab" aria-selected="false">Create account</button>
+  </div>
+  <form id="loginForm" class="auth-form active">
+   <label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required>
+   <label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required minlength="8">
+   <button type="submit" style="width:100%;margin-top:18px">Log in securely</button>
+  </form>
+  <form id="registerForm" class="auth-form">
+   <label for="registerName">What should Thumela call you?</label><input id="registerName" autocomplete="given-name" maxlength="60" required placeholder="Your first name">
+   <label for="registerEmail">Email address</label><input id="registerEmail" type="email" autocomplete="email" required>
+   <label for="registerPassword">Create a password (at least 8 characters)</label><input id="registerPassword" type="password" autocomplete="new-password" required minlength="8">
+   <div class="grid2">
+    <div><label for="registerLanguage">Preferred language & voice</label><select id="registerLanguage" aria-label="Choose app language and spoken voice"><option value="en-ZA">English (South Africa)</option><option value="af-ZA">Afrikaans</option><option value="zu-ZA">isiZulu</option><option value="xh-ZA">isiXhosa</option><option value="st-ZA">Sesotho</option><option value="tn-ZA">Setswana</option><option value="nso-ZA">Sepedi</option><option value="ts-ZA">itsonga</option><option value="ve-ZA">Tshivenda (device voice)</option><option value="ss-ZA">siSwati</option><option value="nr-ZA">isiNdebele (device voice)</option><option value="sn-ZW">Shona</option><option value="en-NG">Nigerian English</option></select></div>
+    <div><label for="registerStyle">Spoken response</label><select id="registerStyle"><option value="warm">Warm & conversational</option><option value="clear">Clear & measured</option></select></div>
+   </div>
+   <button type="submit" style="width:100%;margin-top:18px">Create my account</button>
+  </form>
+  <div id="authMessage" role="status" aria-live="polite"></div>
+  <p class="muted small" style="margin-top:16px">Hackathon demo: do not use a password you use for another service. No real money is held or transferred.</p>
+ </div>
+</section>
+<div id="appContent" hidden>
+<main id="main">
+ <div class="notice"><strong>PHP + MySQL demo:</strong> Your account is protected by a PHP session. Wallet data and transfers are simulated; no real money or blockchain transaction is sent. The local MCP-style tool endpoint provides wallet, recipient, history, savings and payment-quote tools. The agent asks for approval before every demo transfer.</div>
+ <div class="layout">
+  <section class="card" aria-labelledby="walletTitle">
+   <div class="eyebrow">Your accessible wallet</div><h2 id="walletTitle">Welcome</h2><p class="muted small">Manage money through voice or the accessible controls below.</p>
+   <div class="balance"><div><div class="muted small">Available demo balance</div><div class="amount" id="balance" aria-live="polite">$250.00 <span>USDT</span></div></div><span class="pill success">Demo wallet</span></div>
+   <div class="quick" aria-label="Quick actions">
+    <button id="sendQuick"><b>↗ Send money</b><span>Pay a saved person</span></button>
+    <button id="balanceQuick" class="secondary"><b>◉ Check balance</b><span>Hear available funds</span></button>
+    <button id="historyQuick" class="secondary"><b>▤ Activity</b><span>Review payments</span></button>
+   </div>
+   <section class="voicebox" aria-labelledby="voiceTitle">
+    <div class="voicehead"><div><div class="eyebrow" style="color:#b8edda">Talk to your agent</div><h2 id="voiceTitle">What would you like to do?</h2></div><span aria-hidden="true" style="font-size:28px">◖))</span></div>
+    <p>Speak naturally, or type a request. Example: “Send 25 USDT to Mum” or “How much do I have?”</p>
+    <div class="grid2" style="margin-bottom:12px"><div><label for="voiceLanguage" style="color:#d8eee6">App language & voice</label><select id="voiceLanguage" aria-label="Choose app language and spoken voice"><option value="en-ZA">English (South Africa)</option><option value="af-ZA">Afrikaans</option><option value="zu-ZA">isiZulu</option><option value="xh-ZA">isiXhosa</option><option value="st-ZA">Sesotho</option><option value="tn-ZA">Setswana</option><option value="nso-ZA">Sepedi</option><option value="ts-ZA">itsonga</option><option value="ve-ZA">Tshivenda (device voice)</option><option value="ss-ZA">siSwati</option><option value="nr-ZA">isiNdebele (device voice)</option><option value="sn-ZW">Shona</option><option value="en-NG">Nigerian English</option></select></div><div><label for="voiceStyle" style="color:#d8eee6">Spoken response</label><select id="voiceStyle" aria-label="Spoken response style"><option value="warm">Warm & conversational</option><option value="clear">Clear & measured</option></select></div></div><p id="voiceAvailability" class="voice-help" role="status" aria-live="polite">Checking available African and regional voices on this device…</p><div class="microw" style="display:block">
+<button class="voice-primary" id="micButton" type="button" aria-label="Start voice conversation">🎙 Start talking to Thumela</button>
+<p class="voice-help" id="voiceHelp">Speak naturally. Thumela will listen, respond aloud and keep the conversation going. Say “stop listening” when you are finished.</p>
+<button class="secondary text-fallback" id="toggleTextMode" type="button" aria-expanded="false">Show typing option</button>
+<div id="textMode" hidden style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+<input id="command" type="text" autocomplete="off" placeholder="Type a financial request…" aria-label="Type a financial request">
+<button id="runCommand" class="secondary" type="button">Ask Thumela</button></div></div>
+    <div class="status" id="voiceStatus" role="status" aria-live="polite">Connecting to Thumela backend…</div>
+   </section>
+   <div id="agentResult" role="status" aria-live="polite" aria-atomic="true" class="plan" aria-live="polite"><h3>Agent workspace</h3><p class="muted small">Your agent's plan and tool activity will appear here.</p></div>
+  </section>
+  <aside class="side">
+   <section class="card"><div class="eyebrow">Agent capabilities</div><h2>More than a voice bot</h2>
+    <ul class="featurelist">
+     <li><span class="check">✓</span><span><strong>Understands goals</strong><br><span class="muted small">Interprets natural-language financial requests.</span></span></li>
+     <li><span class="check">✓</span><span><strong>Checks before acting</strong><br><span class="muted small">Validates recipient, balance and fees.</span></span></li>
+     <li><span class="check">✓</span><span><strong>Uses financial tools</strong><br><span class="muted small">Demo tools model an MCP-connected agent.</span></span></li>
+     <li><span class="check">✓</span><span><strong>Asks for consent</strong><br><span class="muted small">No payment without explicit approval.</span></span></li>
+     <li><span class="check">✓</span><span><strong>Reports the outcome</strong><br><span class="muted small">Reads transaction status aloud.</span></span></li>
+    </ul>
+   </section>
+   <section class="card"><div class="eyebrow">Saved recipients</div><h2>Trusted people</h2><div id="recipients" class="activity"></div><p class="muted small">Demo recipients only. Real address verification requires a connected chain and trusted identity data.</p></section>
+   <section class="card"><div class="eyebrow">Recent activity</div><h2>Transaction history</h2><div id="activity" class="activity"><p class="muted small">No payments yet.</p></div></section>
+  </aside>
+ </div>
+ <section class="feature-grid" aria-label="Additional financial tools">
+  <section class="card">
+   <div class="eyebrow">Plan ahead</div><h2>Savings goals</h2>
+   <p class="muted small">Create goals and move demo funds into your savings allocation.</p>
+   <form id="goalForm">
+    <label for="goalTitle">Goal name</label><input id="goalTitle" required maxlength="100" placeholder="e.g. Emergency fund">
+    <div class="grid2"><div><label for="goalTarget">Target (USDT)</label><input id="goalTarget" type="number" min="1" step=".01" required></div><div><label for="goalDate">Target date</label><input id="goalDate" type="date"></div></div>
+    <button type="submit" class="smallbtn">Create savings goal</button>
+   </form>
+   <div id="goalsList" class="activity"><p class="muted small">No goals yet.</p></div>
+  </section>
+  <section class="card">
+   <div class="eyebrow">Your people</div><h2>Saved recipients</h2>
+   <p class="muted small">Add a personal recipient. Always verify wallet addresses independently.</p>
+   <form id="recipientForm">
+    <label for="recipientName">Recipient name</label><input id="recipientName" required maxlength="100" placeholder="e.g. Thandi">
+    <div class="grid2"><div><label for="recipientCountry">Country / city</label><input id="recipientCountry" required placeholder="e.g. Durban, South Africa"></div><div><label for="recipientNetwork">Network</label><select id="recipientNetwork"><option>Sepolia</option><option>Ethereum</option><option>Polygon</option><option>Other</option></select></div></div>
+    <label for="recipientAddress">Wallet address / identifier</label><input id="recipientAddress" required maxlength="120" placeholder="Paste and verify the address">
+    <button type="submit" class="smallbtn">Save recipient</button>
+   </form>
+   <div id="savedRecipients" class="activity"></div>
+  </section>
+  <section class="card">
+   <div class="eyebrow">Everyday payments</div><h2>Bills & airtime</h2>
+   <p class="muted small">Simulated bill and airtime payments. Review details before confirming.</p>
+   <form id="billForm">
+    <label for="billType">Payment type</label><select id="billType"><option>Airtime</option><option>Electricity</option><option>Water</option><option>Internet</option></select>
+    <label for="billAccount">Phone / account reference</label><input id="billAccount" required maxlength="80" placeholder="Enter account or phone number">
+    <label for="billAmount">Amount (USDT)</label><input id="billAmount" type="number" min=".01" step=".01" required>
+    <button type="submit" class="smallbtn">Review bill payment</button>
+   </form>
+   <div id="billHistory" class="activity"></div>
+  </section>
+  <section class="card">
+   <div class="eyebrow">Request money</div><h2>Payment request</h2>
+   <p class="muted small">Create a request code to share with someone. This demo code is not a live payment URL.</p>
+   <form id="requestForm">
+    <label for="requestAmount">Amount (optional)</label><input id="requestAmount" type="number" min=".01" step=".01" placeholder="Leave blank for any amount">
+    <label for="requestNote">What is it for?</label><input id="requestNote" maxlength="160" placeholder="e.g. Shared groceries">
+    <button type="submit" class="smallbtn">Create request code</button>
+   </form>
+   <div id="requestResult" class="plan" hidden></div>
+   <div id="requestHistory" class="activity"></div>
+  </section>
+  <section class="card">
+   <div class="eyebrow">Shared expenses</div><h2>Split a payment</h2>
+   <p class="muted small">Calculate each person's share. This calculator does not collect money.</p>
+   <label for="splitTotal">Total amount (USDT)</label><input id="splitTotal" type="number" min=".01" step=".01" value="100">
+   <label for="splitPeople">Number of people</label><input id="splitPeople" type="number" min="2" max="50" step="1" value="4">
+   <div class="summary" id="splitResult" aria-live="polite">Each person pays 25.00 USDT.</div>
+  </section>
+  <section class="card">
+   <div class="eyebrow">Transparency</div><h2>Demo transaction record</h2>
+   <p class="muted small">Your recent activity is private to your account. Payments here are simulations.</p>
+   <div id="fullActivity" class="activity"></div>
+  </section>
+ </section>
+</main>
+<footer>Thumela is an independent hackathon prototype. It is not a bank, custodian, payment provider or live blockchain wallet. Never enter a real seed phrase, private key or password. All transfers, bills and savings movements in this build are demo ledger operations only.</footer> It is not a bank, custodian, payment provider or live blockchain wallet. Never enter a real seed phrase, private key or password.</footer></div>
+
+<div class="modal" id="approvalModal" role="dialog" aria-modal="true" aria-labelledby="approvalTitle" aria-describedby="approvalDesc">
+ <div class="dialog"><div class="eyebrow">Explicit user approval required</div><h2 id="approvalTitle">Review your payment</h2><p id="approvalDesc" class="muted">Listen to the details before approving.</p>
+  <div class="summary" id="approvalSummary"></div>
+  <div class="warning">This is a simulated transaction. In a production wallet, signing would happen securely through the user's wallet and only after informed consent.</div>
+  <div class="actions"><button id="approvePayment">Approve demo payment</button><button class="ghost" id="cancelPayment">Cancel</button></div>
+ </div>
+</div>
+<script>
+"use strict";
+const API="./backend/api";
+const $=id=>document.getElementById(id);
+let state={balance:0,recipients:[],history:[],pending:null,user:null,goals:[],requests:[],bills:[]};
+let selectedVoice=null;
+function money(n){return Number(n).toFixed(2)}
+function selectedLang(){return $("voiceLanguage").value}
+function voiceMatches(v,lang){const base=lang.toLowerCase().split("-")[0];return v.lang.toLowerCase()===lang.toLowerCase()||v.lang.toLowerCase().startsWith(base+"-")}
+function chooseVoice(){
+ const voices=window.speechSynthesis?.getVoices?.()||[];
+ const lang=selectedLang();
+ const exact=voices.filter(v=>v.lang.toLowerCase()===lang.toLowerCase());
+ const regional=voices.filter(v=>voiceMatches(v,lang));
+ selectedVoice=exact[0]||regional[0]||null;
+ const status=$("voiceAvailability");
+ if(status){
+  status.textContent=selectedVoice?`Available device voice: ${selectedVoice.name} (${selectedVoice.lang}).`:`No ${lang} voice is installed on this device. Thumela will request this locale, but your device may use a fallback voice. Install a matching African language voice for the best experience.`;
+ }
+}
+
+
+const VOICE_PHRASES={
+"zu-ZA":{welcome:"Sawubona. NginguThumela, umsizi wakho wezezimali. Ngingakusiza uhlole imali yakho, ubone umlando wokukhokha, ulungiselele inkokhelo futhi uphathe ukonga. Ufuna ukwenzani?",listening:"Ngiyakuzwa. Khuluma ngokukhululeka.",balance:n=>`Imali yakho ekhona ku-demo ingu-${n} USDT. Ayikho imali esusiwe.`,history:n=>n?`Unemisebenzi yokukhokha engu-${n} yakamuva.`:"Awukabi nayo imisebenzi yokukhokha.",fallback:"Ngiyaxolisa, angiqondanga. Sicela uzame futhi."},
+"xh-ZA":{welcome:"Molo. NdinguThumela, umncedisi wakho wezemali. Ndingakunceda ujonge imali yakho, ubone imbali yeentlawulo, ulungiselele intlawulo kwaye ulawule ukonga. Ungathanda ukwenza ntoni?",listening:"Ndiyamamela. Thetha ngokukhululekileyo.",balance:n=>`Imali yakho ekhoyo kwidemo yi-${n} USDT. Akukho mali isusiweyo.`,history:n=>n?`Uneentengiselwano zamva nje ezingu-${n}.`:"Awukabinazo iintengiselwano.",fallback:"Uxolo, andikuqondanga. Zama kwakhona."},
+"af-ZA":{welcome:"Hallo. Ek is Thumela, jou persoonlike finansiële assistent. Ek kan jou saldo nagaan, transaksies wys en betalings voorberei. Wat wil jy doen?",listening:"Ek luister. Praat gerus.",balance:n=>`Jou beskikbare demo-saldo is ${n} USDT. Geen geld is verskuif nie.`,history:n=>n?`Jy het ${n} onlangse transaksies.`:"Jy het nog geen transaksies nie.",fallback:"Jammer, ek het dit nie verstaan nie. Probeer asseblief weer."},
+"st-ZA":{welcome:"Dumela. Ke Thumela, mothusi wa hao wa ditjhelete. Nka o thusa ho sheba tjhelete ya hao le ditefo. O batla ho etsa eng?",listening:"Ke a mamela. Bua ka bolokolohi.",balance:n=>`Chelete ya hao ya demo ke ${n} USDT. Ha ho tjhelete e tlositsweng.`,history:n=>n?`O na le ditransekshene tse ${n} tsa moraorao.`:"Ha o so be le ditransekshene.",fallback:"Tshwarelo, ha ke a utlwisisa. Ka kopo leka hape."},
+"sn-ZW":{welcome:"Mhoro. Ndini Thumela, mubatsiri wako wezvemari. Ndinogona kutarisa mari yako nenhoroondo yekubhadhara. Unoda kuita chii?",listening:"Ndiri kuteerera. Taura wakasununguka.",balance:n=>`Mari yako iripo mudemo i-${n} USDT. Hapana mari yabviswa.`,history:n=>n?`Une matransaction ${n} achangopfuura.`:"Hausati wava nematransaction.",fallback:"Ndine urombo, handina kunzwisisa. Edza zvakare."}
+};
+function localizeSpoken(text){
+ const p=VOICE_PHRASES[selectedLang()];if(!p)return text;
+ if(/Hello\\. I'm Thumela, your voice-first financial assistant/i.test(text))return p.welcome;
+ if(/I'm listening\\. Speak naturally/i.test(text))return p.listening;
+ const b=text.match(/Your available demo balance is ([\\d.]+) USDT/i);if(b&&p.balance)return p.balance(b[1]);
+ const hist=text.match(/You have (\\d+) recent transactions/i);if(hist&&p.history)return p.history(hist[1]);
+ if(/You have no transactions yet/i.test(text)&&p.history)return p.history(0);
+ if(/couldn't understand|did not understand|try again/i.test(text)&&p.fallback)return p.fallback;
+ return text;
+}
+function normalizeVoiceCommand(raw){
+ const s=raw.toLowerCase().trim();
+ const patterns=[
+ [/^(ngikhombise|ngitshele|ngicela) (imali|ibhalansi)|^imali enginayo|^ibhalansi yami/,"check my balance"],
+ [/^umlando wami|^ngikhombise umlando|^ukukhokha kwami/,"show my transaction history"],
+ [/^ngicela usizo|^ngenzenjani|^yini ongayenza/,"what can you do"],
+ [/^ndibonise imali yam|^imali yam ikhona|^ibhalansi yam/,"check my balance"],
+ [/^imbali yentengiselwano|^ndibonise imbali|^iintlawulo zam/,"show my transaction history"],
+ [/^ndincede|^ungandinceda/,"what can you do"],
+ [/^wys my saldo|^wat is my saldo|^my saldo/,"check my balance"],
+ [/^wys my transaksies|^transaksie geskiedenis/,"show my transaction history"],
+ [/^help my|^wat kan jy doen/,"what can you do"],
+ [/^chelete ea ka|^ke na le chelete e kae/,"check my balance"],
+ [/^nalane ya ka|^ditefo tsa ka/,"show my transaction history"],
+ [/^mari yangu|^ndine mari yakawanda sei/,"check my balance"],
+ [/^nhoroondo yangu/,"show my transaction history"]
+ ];
+ for(const [re,canonical] of patterns)if(re.test(s))return canonical;
+ return raw;
+}
+
+const UI_TEXT={
+"en-ZA":{"welcome":"Welcome to Thumela","tagline":"Your money. Your voice. Your control.","login":"Log in","create":"Create account","email":"Email address","password":"Password","wallet":"Your accessible wallet","balance":"Available demo balance","talk":"Start talking to Thumela","stop":"Stop voice conversation","listening":"I'm listening. Speak naturally.","typing":"Show typing option","ask":"Ask Thumela","help":"Hear sign-in instructions","transactions":"Recent activity","recipients":"Saved recipients","goals":"Savings goals","requests":"Payment requests"},
+"af-ZA":{"welcome":"Welkom by Thumela","tagline":"Jou geld. Jou stem. Jou beheer.","login":"Teken aan","create":"Skep rekening","email":"E-posadres","password":"Wagwoord","wallet":"Jou toeganklike beursie","balance":"Beskikbare demo-saldo","talk":"Praat met Thumela","stop":"Stop stemgesprek","listening":"Ek luister. Praat gerus.","typing":"Wys tikopsie","ask":"Vra Thumela","help":"Luister na aanmeldinstruksies","transactions":"Onlangse aktiwiteit","recipients":"Gestoorde ontvangers","goals":"Spaardoelwitte","requests":"Betalingsversoeke"},
+"zu-ZA":{"welcome":"Siyakwamukela ku-Thumela","tagline":"Imali yakho. Izwi lakho. Ukulawula kwakho.","login":"Ngena ngemvume","create":"Dala i-akhawunti","email":"Ikheli le-imeyili","password":"Iphasiwedi","wallet":"Isikhwama sakho semali","balance":"Imali ekhona ku-demo","talk":"Khuluma no-Thumela","stop":"Misa ingxoxo yezwi","listening":"Ngiyakuzwa. Khuluma ngokukhululeka.","typing":"Bonisa indawo yokubhala","ask":"Buza u-Thumela","help":"Lalela imiyalelo yokungena","transactions":"Okwenzekile kamuva","recipients":"Abamukeli abagciniwe","goals":"Izinhloso zokonga","requests":"Izicelo zokukhokha"},
+"xh-ZA":{"welcome":"Wamkelekile ku-Thumela","tagline":"Imali yakho. Ilizwi lakho. Ulawulo lwakho.","login":"Ngena","create":"Yenza iakhawunti","email":"Idilesi ye-imeyile","password":"Igama lokugqitha","wallet":"Isipaji sakho semali","balance":"Imali ekhoyo kwidemo","talk":"Thetha no-Thumela","stop":"Misa incoko yelizwi","listening":"Ndiyamamela. Thetha ngokukhululekileyo.","typing":"Bonisa indawo yokuchwetheza","ask":"Buza u-Thumela","help":"Mamela imiyalelo yokungena","transactions":"Imisebenzi yakutshanje","recipients":"Abamkeli abagciniweyo","goals":"Iinjongo zokonga","requests":"Izicelo zentlawulo"},
+"st-ZA":{"welcome":"Rea o amohela ho Thumela","tagline":"Chelete ya hao. Lentswe la hao. Taolo ya hao.","login":"Kena","create":"Etsa akhaonto","email":"Aterese ya imeile","password":"Phasewete","wallet":"Sepache sa hao","balance":"Chelete e teng ya demo","talk":"Bua le Thumela","stop":"Emisa puisano ya lentswe","listening":"Ke a mamela. Bua ka bolokolohi.","typing":"Bontsha sebaka sa ho ngola","ask":"Botsa Thumela","help":"Mamela ditaelo tsa ho kena","transactions":"Ditshebetso tsa moraorao","recipients":"Baamohedi ba bolokilweng","goals":"Dipheo tsa ho boloka","requests":"Dikopo tsa tefo"},
+"tn-ZA":{"welcome":"O amogetswe mo Thumela","tagline":"Madi a gago. Lentswe la gago. Taolo ya gago.","login":"Tsena","create":"Bopa akhaonto","email":"Aterese ya imeile","password":"Phasewete","wallet":"Sekgwama sa gago","balance":"Madi a a leng teng mo demo","talk":"Bua le Thumela","stop":"Emisa puisano ya lentswe","listening":"Ke a reetsa. Bua ka kgololesego.","typing":"Bontsha lefelo la go kwala","ask":"Botsa Thumela","help":"Reetsa ditaelo tsa go tsena","transactions":"Ditiragalo tsa bosheng","recipients":"Baamogedi ba ba bolokilweng","goals":"Maikaelelo a go boloka","requests":"Dikopo tsa tuelo"},
+"nso-ZA":{"welcome":"Re a go amogela go Thumela","tagline":"Tšhelete ya gago. Lentšu la gago. Taolo ya gago.","login":"Tsena","create":"Hlama akhaonto","email":"Aterese ya imeile","password":"Phasewete","wallet":"Sepache sa gago","balance":"Tšhelete ya demo yeo e lego gona","talk":"Bolela le Thumela","stop":"Emiša poledišano ya lentšu","listening":"Ke a theeletša. Bolela ka bolokologi.","typing":"Bontšha lefelo la go ngwala","ask":"Botšiša Thumela","help":"Theeletša ditaelo tša go tsena","transactions":"Ditiro tša morago bjale","recipients":"Baamogedi bao ba bolokilwego","goals":"Maikemišetšo a go boloka","requests":"Dikgopelo tša tefo"},
+"ts-ZA":{"welcome":"Mi amukeriwile eka Thumela","tagline":"Mali ya wena. Rito ra wena. Vulawuri bya wena.","login":"Nghena","create":"Endla akhawunti","email":"Adirese ya imeyili","password":"Phasiwedi","wallet":"Xipachi xa wena xa mali","balance":"Mali leyi nga kona eka demo","talk":"Vulavula na Thumela","stop":"Yimisa bulo ra rito","listening":"Ndza yingisela. Vulavula hi ku ntshunxeka.","typing":"Kombisa ndhawu yo tsala","ask":"Vutisa Thumela","help":"Yingisela swiletelo swo nghena","transactions":"Mintirho ya sweswinyana","recipients":"Vamukeri lava hlayisiweke","goals":"Tipakani to hlayisa","requests":"Swikombelo swa hakelo"},
+"ve-ZA":{"welcome":"Welcome to Thumela","tagline":"Your money. Your voice. Your control.","login":"Log in","create":"Create account","email":"Email address","password":"Password","wallet":"Your accessible wallet","balance":"Available demo balance","talk":"Talk to Thumela","stop":"Stop voice conversation","listening":"I am listening. Speak naturally.","typing":"Show typing option","ask":"Ask Thumela","help":"Hear sign-in instructions","transactions":"Recent activity","recipients":"Saved recipients","goals":"Savings goals","requests":"Payment requests"},
+"ss-ZA":{"welcome":"Siyakwamukela ku-Thumela","tagline":"Imali yakho. Lilizwi lakho. Kulawula kwakho.","login":"Ngena","create":"Yakha i-akhawunti","email":"Likheli le-imeyili","password":"Libitomfihlo","wallet":"Sikhwama sakho semali","balance":"Imali lekhona ku-demo","talk":"Khuluma na-Thumela","stop":"Misa kukhuluma ngelivi","listening":"Ngilalele. Khuluma ukhululekile.","typing":"Khombisa indzawo yekubhala","ask":"Buta Thumela","help":"Lalela ticondziso tekungena","transactions":"Lokwentekile kamuva","recipients":"Bamukeli labagciniwe","goals":"Tinjongo tekonga","requests":"Ticelo tekukhokha"},
+"nr-ZA":{"welcome":"Welcome to Thumela","tagline":"Your money. Your voice. Your control.","login":"Log in","create":"Create account","email":"Email address","password":"Password","wallet":"Your accessible wallet","balance":"Available demo balance","talk":"Talk to Thumela","stop":"Stop voice conversation","listening":"I am listening. Speak naturally.","typing":"Show typing option","ask":"Ask Thumela","help":"Hear sign-in instructions","transactions":"Recent activity","recipients":"Saved recipients","goals":"Savings goals","requests":"Payment requests"},
+"sn-ZW":{"welcome":"Titambire kuThumela","tagline":"Mari yako. Inzwi rako. Kutonga kwako.","login":"Pinda","create":"Gadzira akaundi","email":"Kero yeemail","password":"Pasiwedhi","wallet":"Chikwama chako chemari","balance":"Mari iripo mudemo","talk":"Taura naThumela","stop":"Misa hurukuro yezwi","listening":"Ndiri kuteerera. Taura wakasununguka.","typing":"Ratidza nzvimbo yekunyora","ask":"Bvunza Thumela","help":"Teerera mirayiridzo yekupinda","transactions":"Zvakaitika munguva pfupi","recipients":"Vanogamuchira vakachengetwa","goals":"Zvinangwa zvekuchengetedza mari","requests":"Zvikumbiro zvekubhadhara"},
+"en-NG":{"welcome":"Welcome to Thumela","tagline":"Your money. Your voice. Your control.","login":"Log in","create":"Create account","email":"Email address","password":"Password","wallet":"Your accessible wallet","balance":"Available demo balance","talk":"Talk to Thumela","stop":"Stop voice conversation","listening":"I'm listening. Speak naturally.","typing":"Show typing option","ask":"Ask Thumela","help":"Hear sign-in instructions","transactions":"Recent activity","recipients":"Saved recipients","goals":"Savings goals","requests":"Payment requests"}
+};
+function tr(key){const pack=UI_TEXT[selectedLang()]||UI_TEXT["en-ZA"];return pack[key]||UI_TEXT["en-ZA"][key]||key}
+function applyLanguage(){
+ const lang=selectedLang(),pack=UI_TEXT[lang]||UI_TEXT["en-ZA"];
+ $("authTitle").textContent=pack.tagline;
+ $("showLogin").textContent=pack.login;$("showRegister").textContent=pack.create;
+ $("micButton").textContent=voiceSession?`■ ${pack.stop}`:`🎙 ${pack.talk}`;
+ $("toggleTextMode").textContent=pack.typing;$("runCommand").textContent=pack.ask;
+ const labels=[...document.querySelectorAll("label")];
+ labels.forEach(el=>{
+  const id=el.getAttribute("for");
+  if(id==="loginEmail"||id==="registerEmail")el.textContent=pack.email;
+  if(id==="loginPassword"||id==="registerPassword")el.textContent=pack.password;
+ });
+ $("voiceTitle").textContent=pack.talk;
+ $("walletTitle").textContent=state.user?`${pack.welcome}, ${state.user.firstName}`:pack.wallet;
+ const balLabel=document.querySelector(".balance .muted.small");if(balLabel)balLabel.textContent=pack.balance;
+ const featureHeads=document.querySelectorAll(".side h2");
+ if(featureHeads.length>=3){featureHeads[0].textContent=pack.recipients;featureHeads[1].textContent=pack.transactions;featureHeads[2].textContent=pack.goals}
+ document.documentElement.lang=lang;
+}
+
+let voiceSession=false, voiceRecognition=null, voiceBusy=false;
+function startVoiceRecognition(){
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!voiceSession||voiceBusy||!SR)return;
+ try{
+  voiceRecognition=new SR();voiceRecognition.lang=selectedLang();voiceRecognition.interimResults=false;voiceRecognition.maxAlternatives=1;voiceRecognition.continuous=false;
+  voiceRecognition.onresult=async e=>{
+   const heard=(e.results[e.results.length-1][0].transcript||"").trim();if(!heard)return;
+   if(/^(stop listening|stop voice|goodbye|end conversation)$/i.test(heard)){stopVoiceSession("Voice conversation ended.");return}
+   voiceBusy=true;try{voiceRecognition.stop()}catch{}
+   $("voiceStatus").textContent="I heard: "+heard;
+   await parseCommand(heard);voiceBusy=false;
+   if(voiceSession&&!window.speechSynthesis?.speaking)startVoiceRecognition();
+  };
+  voiceRecognition.onerror=e=>{
+   if(e.error==="not-allowed"||e.error==="service-not-allowed"){stopVoiceSession("Microphone permission was denied. Please allow microphone access.");return}
+   if(e.error!=="no-speech"&&e.error!=="aborted")$("voiceStatus").textContent="I couldn't hear that clearly. Please try again.";
+  };
+  voiceRecognition.onend=()=>{if(voiceSession&&!voiceBusy&&!window.speechSynthesis?.speaking)setTimeout(startVoiceRecognition,450)};
+  voiceRecognition.start();$("micButton").classList.add("listening");
+  $("micButton").textContent="■ Stop voice conversation";$("micButton").setAttribute("aria-label","Stop voice conversation");
+  $("voiceStatus").textContent="I'm listening. Speak naturally.";
+ }catch(err){stopVoiceSession("Voice input could not start. Check browser support and microphone permission.");}
+}
+function stopVoiceSession(message="Voice conversation stopped."){
+ voiceSession=false;voiceBusy=false;
+ if(voiceRecognition){try{voiceRecognition.onend=null;voiceRecognition.stop()}catch{}voiceRecognition=null}
+ $("micButton").classList.remove("listening");$("micButton").textContent="🎙 Start talking to Thumela";$("micButton").setAttribute("aria-label","Start voice conversation");
+ if(message)setStatus(message,false);
+}
+function speak(text){
+ if(!("speechSynthesis" in window)){setStatus("Spoken output is unavailable. Please enable your device screen reader.",false);return}
+ window.speechSynthesis.cancel();chooseVoice();
+ const spoken=localizeSpoken(text);const u=new SpeechSynthesisUtterance(spoken);u.lang=selectedLang();if(selectedVoice)u.voice=selectedVoice;
+ u.rate=$("voiceStyle").value==="clear"?.88:.96;
+ u.onstart=()=>{if(voiceSession&&voiceRecognition){try{voiceRecognition.onend=null;voiceRecognition.stop()}catch{}voiceRecognition=null}};
+ u.onend=()=>{if(voiceSession&&!voiceBusy)setTimeout(startVoiceRecognition,350)};
+ u.onerror=()=>{if(voiceSession&&!voiceBusy)setTimeout(startVoiceRecognition,500)};
+ window.speechSynthesis.speak(u);
+}
+function setStatus(text,voice=true){$("voiceStatus").textContent=text;if(voice)speak(text)}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function api(path,options={}){
+ const res=await fetch(API+path,{credentials:"same-origin",headers:{"Content-Type":"application/json"},...options});
+ const data=await res.json().catch(()=>({error:"Invalid backend response"}));
+ if(!res.ok)throw new Error(data.error||"Backend request failed");
+ return data;
+}
+async function mcpTool(name,args={}){
+ const rpc=await api("/mcp.php",{method:"POST",body:JSON.stringify({jsonrpc:"2.0",id:Date.now(),method:"tools/call",params:{name,arguments:args}})});
+ const result=rpc.result;
+ if(!result)throw new Error(rpc.error?.message||"MCP tool returned no result.");
+ if(result.isError)throw new Error(result.content?.[0]?.text||"MCP tool failed.");
+ const raw=result.content?.[0]?.text;
+ if(!raw)return {};
+ try{return JSON.parse(raw)}catch{return {message:raw}}
+}
+function tool(name,details){return `<li><span class="tool">${escapeHTML(name)}</span> — ${escapeHTML(details)}</li>`}
+function showPlan(title,steps,spoken){$("agentResult").innerHTML=`<h3>${escapeHTML(title)}</h3><ol>${steps.map(s=>`<li>${s}</li>`).join("")}</ol>`;setStatus(spoken)}
+async function refresh(){
+ const profile=await api("/auth.php");
+ if(!profile.authenticated || !profile.user || !profile.user.firstName){
+  throw new Error("Your login was accepted, but Thumela could not retrieve your account profile. Check that you are using the matching updated PHP files and that PHP sessions are enabled.");
+ }
+ state.user=profile.user;
+ $("walletTitle").textContent=`Welcome, ${state.user.firstName}`;
+ $("userGreeting").textContent=`Signed in as ${state.user.firstName}`;
+ if($("voiceLanguage")) $("voiceLanguage").value=state.user.preferredLanguage||"en-ZA";
+ if($("authLanguage")) $("authLanguage").value=state.user.preferredLanguage||"en-ZA";
+ applyLanguage();
+ if($("voiceStyle")) $("voiceStyle").value=state.user.voiceStyle||"warm";
+ const [wallet,recipients,history,features]=await Promise.all([api("/wallet.php"),api("/recipients.php"),api("/transactions.php"),api("/features.php")]);
+ state.balance=Number(wallet.balance);state.recipients=recipients.recipients;state.history=history.transactions;
+ state.goals=features.goals||[];state.requests=features.requests||[];state.bills=features.bills||[];render();renderFeatures();
+}
+function render(){
+ $("balance").innerHTML="$"+money(state.balance)+' <span>USDT</span>';
+ $("recipients").innerHTML=state.recipients.map(r=>`<div class="tx"><div><strong>${escapeHTML(r.name)}</strong><span class="muted small">${escapeHTML(r.country)} · ${escapeHTML(r.address)}</span></div><span class="pill success">Saved</span></div>`).join("");
+ $("activity").innerHTML=state.history.length?state.history.slice(0,5).map(t=>`<div class="tx"><div><strong>${escapeHTML(t.amount.toFixed(2))} USDT · ${escapeHTML(t.to)}</strong><span class="muted small">${escapeHTML(t.reference)} · ${escapeHTML(t.time)}</span></div><span class="pill ${t.status==="Confirmed (demo)"?"success":""}">${escapeHTML(t.status)}</span></div>`).join(""):'<p class="muted small">No payments yet.</p>';
+}
+async function parseCommand(raw){
+ const text=normalizeVoiceCommand(raw.trim());if(!text){setStatus("Please say or type what you would like me to do.");return}
+ const lower=text.toLowerCase();
+ try{
+  if(/what can you do|help|your features|what can you help/.test(lower)){
+   const capabilities=["Check my wallet balance and recent transactions","Prepare a payment to a saved recipient and ask for my approval","Create a savings goal and contribute demo funds","Pay simulated airtime, electricity, water or internet bills after approval","Create a payment request code","Calculate how to split a shared expense","Save a recipient using the recipient form"];
+   showPlan("Things I can help with",capabilities.map(x=>tool("available_action",x)),"I can check your balance and history, prepare payments, create savings goals, simulate bill payments, make payment requests and calculate shared expenses. I will ask before any action that moves demo funds.");return;
+  }
+  const billMatch=text.match(/(?:pay|buy)\s+(airtime|electricity|water|internet)\s+(\d+(?:\.\d+)?)\s+(?:to|for)\s+(.+)/i);
+  if(billMatch){
+   const type=billMatch[1].toLowerCase().replace(/^./,c=>c.toUpperCase()),amount=Number(billMatch[2]),account=billMatch[3].replace(/[.!?]+$/,"").trim();
+   if(!account){setStatus("Please tell me the phone number or account reference.");return}
+   const preview=`I am about to record a demo ${type.toLowerCase()} payment of ${money(amount)} USDT for ${account}. This will reduce your demo wallet balance.`;
+   setStatus(preview+" Please confirm on screen.");
+   if(!confirm(preview+" Do you approve?")){setStatus("Cancelled. No funds were moved.");return}
+   const result=await mcpTool("pay_bill",{billType:type,accountReference:account,amount});
+   await refresh();const msg=`Your demo ${type.toLowerCase()} payment was recorded. Reference ${result.reference}. Remaining demo balance ${money(result.balance)} USDT.`;
+   showPlan("Bill payment recorded",[tool("pay_bill",`${type} · ${account} · ${money(amount)} USDT`),tool("wallet_balance",`${money(result.balance)} USDT remaining`),tool("receipt",result.reference)],msg);return;
+  }
+  const requestMatch=text.match(/(?:request|ask)\s+(?:for\s+)?(?:\$)?(\d+(?:\.\d+)?)\s*(?:usdt|usd)?\s+(?:for|because|to cover)\s+(.+)/i);
+  if(requestMatch){
+   const amount=Number(requestMatch[1]),note=requestMatch[2].replace(/[.!?]+$/,"").trim();
+   const result=await mcpTool("create_payment_request",{amount,note});
+   await refresh();showPlan("Payment request created",[tool("create_payment_request",result.shareText),"No money was moved. Share the request code with the person who will pay."],`Your payment request code is ${result.requestCode}. I have not received any money. You can copy the code from the payment requests section.`);return;
+  }
+  const goalMatch=text.match(/(?:create|make|set up)\s+(?:a\s+)?(?:savings\s+)?goal\s+(?:called\s+)?(.+?)\s+(?:of|for|target(?:ing)?)\s+(\d+(?:\.\d+)?)/i);
+  if(goalMatch){
+   const title=goalMatch[1].replace(/[.!?]+$/,"").trim(),targetAmount=Number(goalMatch[2]);
+   const result=await mcpTool("create_savings_goal",{title,targetAmount});
+   await refresh();showPlan("Savings goal created",[tool("create_savings_goal",`${title} · target ${money(targetAmount)} USDT`)],`I created your ${title} savings goal with a target of ${money(targetAmount)} USDT.`);return;
+  }
+  const contributeMatch=text.match(/(?:add|put|move|save)\s+(\d+(?:\.\d+)?)\s*(?:usdt|usd)?\s+(?:into|to)\s+(?:my\s+)?(.+?)(?:\s+goal)?[.!?]*$/i);
+  if(contributeMatch && /goal|savings|fund|holiday|emergency|school|rent/i.test(contributeMatch[2])){
+   const amount=Number(contributeMatch[1]),target=contributeMatch[2].replace(/[.!?]+$/,"").trim();
+   const goal=state.goals.find(g=>g.title.toLowerCase()===target.toLowerCase()||g.title.toLowerCase().includes(target.toLowerCase()));
+   if(!goal){showPlan("Savings goal not found",[tool("list_savings_goals","No matching goal was found.")],"I could not find that savings goal. Please create it first or check its name.");return}
+   const preview=`Move ${money(amount)} USDT from your available demo wallet into ${goal.title}?`;
+   if(!confirm(preview+" This is a simulated internal allocation.")){setStatus("Cancelled. No funds were moved.");return}
+   const result=await mcpTool("contribute_savings_goal",{goalId:Number(goal.id),amount});
+   await refresh();showPlan("Savings contribution recorded",[tool("contribute_savings_goal",`${money(amount)} USDT added to ${goal.title}.`),tool("receipt",result.reference)],`I added ${money(amount)} USDT to ${goal.title}. Reference ${result.reference}.`);return;
+  }
+  if(/balance|how much|available funds/.test(lower)){
+   const d=await mcpTool("get_wallet_balance");
+   showPlan("Balance check",[tool("get_wallet_balance",`MCP tool read wallet balance: ${money(d.balance)} USDT.`),"No funds moved."],`Your available demo balance is ${money(d.balance)} USDT. No money was moved.`);return;
+  }
+  if(/history|transactions|recent payments|activity/.test(lower)){
+   const d=await mcpTool("get_transaction_history",{limit:10});state.history=d;render();renderFeatures();
+   const count=state.history.length;
+   showPlan("Transaction history",[tool("get_transaction_history",`Retrieved ${count} transaction(s) from the backend.`),count?`${count} transaction(s) are listed in Recent activity.`:"There are no transactions yet."],count?`You have ${count} recent transactions. See the activity list.`:"You have no transactions yet.");return;
+  }
+  if(/save|savings|allocate|set aside/.test(lower)){
+   const m=text.match(/(?:save|savings|allocate|set aside)\s+\$?(\d+(?:\.\d+)?)/i);
+   if(!m){setStatus("Tell me an amount, for example: save 40 USDT.");return}
+   const amount=Number(m[1]);
+   showPlan("Savings goal proposal",[tool("get_wallet_balance",`Checked backend balance: ${money(state.balance)} USDT.`),`Proposed savings allocation: ${money(amount)} USDT.`,"No separate savings account is connected. This is a planning action only."],`I can propose a savings goal of ${money(amount)} USDT. No funds have been moved.`);return;
+  }
+  const match=text.match(/(?:send|pay|transfer)\s+\$?(\d+(?:\.\d+)?)\s*(?:usdt|usd|dollars?)?\s+(?:to\s+)?(.+)/i);
+  if(!match){setStatus('Try: "send 25 USDT to Mum", "pay airtime 20 to 0712345678", "create savings goal Holiday for 500", "add 30 to Holiday goal", "request 15 for lunch", "show my history", or "what can you do?"');return}
+  const amount=Number(match[1]);const target=match[2].replace(/[.!?]+$/,"").trim();
+  const recipient=state.recipients.find(r=>r.name.toLowerCase()===target.toLowerCase()||r.name.toLowerCase().startsWith(target.toLowerCase()));
+  if(!Number.isFinite(amount)||amount<=0){setStatus("The payment amount must be greater than zero.");return}
+  if(!recipient){showPlan("Recipient not recognised",[tool("verify_recipient",`No saved recipient matched ${target}. Backend blocked the payment.`),"Add and independently verify the recipient before attempting a payment."],`I could not find a saved recipient called ${target}. I have not prepared a payment.`);return}
+  const quote=await mcpTool("prepare_payment",{amount,recipientId:recipient.id});
+  showPlan("Payment prepared — approval needed",[tool("verify_recipient",`${recipient.name} · ${recipient.country} · ${recipient.address} · ${recipient.network}.`),tool("get_wallet_balance",`${money(quote.balance)} USDT available.`),tool("calculate_transfer",`${money(amount)} USDT + ${money(quote.fee)} USDT estimated demo fee.`),"Waiting for explicit user approval. No transaction has been submitted."],`I prepared ${money(amount)} USDT for ${recipient.name}. The estimated fee is ${money(quote.fee)} USDT. Total ${money(quote.total)} USDT. Please review and approve or cancel.`);
+  state.pending={quote,recipient};
+  $("approvalSummary").innerHTML=`<div class="tx"><div><strong>Recipient</strong><span>${escapeHTML(recipient.name)} · ${escapeHTML(recipient.country)}</span></div></div><div class="tx"><div><strong>Wallet address</strong><span>${escapeHTML(recipient.address)} (${escapeHTML(recipient.network)})</span></div></div><div class="tx"><div><strong>Amount</strong><span>${money(amount)} USDT</span></div></div><div class="tx"><div><strong>Estimated fee</strong><span>${money(quote.fee)} USDT</span></div></div><div class="tx"><div><strong>Total</strong><span>${money(quote.total)} USDT</span></div></div>`;
+  $("approvalModal").classList.add("open");$("approvePayment").focus();
+ }catch(err){setStatus("I cannot reach the Thumela backend. Please start the server and try again. "+err.message)}
+}
+
+function renderFeatures(){
+ const goals=$("goalsList");
+ goals.innerHTML=state.goals.length?state.goals.map(g=>{
+  const pct=Math.min(100,Math.round(Number(g.saved_amount)/Number(g.target_amount)*100));
+  return `<div class="tx"><div style="width:100%"><strong>${escapeHTML(g.title)}</strong><span class="muted small">${money(g.saved_amount)} / ${money(g.target_amount)} USDT · ${pct}%${g.target_date?' · by '+escapeHTML(g.target_date):''}</span><div style="height:7px;background:#e5eee9;border-radius:9px;margin:8px 0"><div style="height:7px;width:${pct}%;background:#07836e;border-radius:9px"></div></div><button type="button" class="secondary smallbtn" data-contribute="${g.id}">Add savings</button></div></div>`;
+ }).join(""):'<p class="muted small">No savings goals yet. Create one above.</p>';
+ $("savedRecipients").innerHTML=state.recipients.map(r=>`<div class="tx"><div><strong>${escapeHTML(r.name)}</strong><span class="muted small">${escapeHTML(r.country)} · ${escapeHTML(r.address)}</span></div><span class="pill success">Saved</span></div>`).join("");
+ $("billHistory").innerHTML=state.bills.length?state.bills.map(b=>`<div class="tx"><div><strong>${escapeHTML(b.bill_type)} · ${money(b.amount)} USDT</strong><span class="muted small">${escapeHTML(b.account_reference)} · ${escapeHTML(b.reference)}</span></div><span class="pill success">${escapeHTML(b.status)}</span></div>`).join(""):'<p class="muted small">No bill payments yet.</p>';
+ $("requestHistory").innerHTML=state.requests.length?state.requests.map(r=>`<div class="tx"><div><strong>${escapeHTML(r.request_code)}</strong><span class="muted small">${r.amount?money(r.amount)+' USDT · ':''}${escapeHTML(r.note||'Payment request')} · ${escapeHTML(r.status)}</span></div><button type="button" class="secondary smallbtn" data-copy="${escapeHTML(r.request_code)}">Copy</button></div>`).join(""):'<p class="muted small">No payment requests yet.</p>';
+ $("fullActivity").innerHTML=state.history.length?state.history.map(t=>`<div class="tx"><div><strong>${escapeHTML(t.amount.toFixed(2))} USDT · ${escapeHTML(t.to)}</strong><span class="muted small">${escapeHTML(t.reference)} · ${escapeHTML(t.time)}</span></div><span class="pill ${String(t.status).toLowerCase().includes('demo')||String(t.status).toLowerCase().includes('paid')||String(t.status).toLowerCase().includes('savings')?'success':''}">${escapeHTML(t.status)}</span></div>`).join(""):'<p class="muted small">No transactions yet.</p>';
+}
+$("goalForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ try{await api("/features.php",{method:"POST",body:JSON.stringify({action:"create_goal",title:$("goalTitle").value,targetAmount:Number($("goalTarget").value),targetDate:$("goalDate").value||null})});$("goalForm").reset();await refresh();setStatus("Your savings goal has been created.");}
+ catch(err){setStatus(err.message)}
+});
+$("goalsList").addEventListener("click",async e=>{
+ const id=e.target?.dataset?.contribute;if(!id)return;
+ const raw=prompt("How much would you like to move into this savings goal? (USDT)");
+ if(raw===null)return;const amount=Number(raw);
+ if(!Number.isFinite(amount)||amount<=0){setStatus("Enter a valid positive amount.");return}
+ if(!confirm(`Move ${money(amount)} USDT from your available demo wallet into this savings goal?`))return;
+ try{const r=await api("/features.php",{method:"POST",body:JSON.stringify({action:"contribute_goal",goalId:Number(id),amount})});await refresh();setStatus(`Savings contribution recorded. Reference ${r.reference}.`)}
+ catch(err){setStatus(err.message)}
+});
+$("recipientForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ try{await api("/features.php",{method:"POST",body:JSON.stringify({action:"add_recipient",name:$("recipientName").value,country:$("recipientCountry").value,address:$("recipientAddress").value,network:$("recipientNetwork").value})});$("recipientForm").reset();await refresh();setStatus("Recipient saved to your personal list. Please verify their address before sending.");}
+ catch(err){setStatus(err.message)}
+});
+$("billForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const type=$("billType").value,account=$("billAccount").value,amount=Number($("billAmount").value);
+ if(!confirm(`Confirm demo ${type.toLowerCase()} payment of ${money(amount)} USDT to account ${account}? This will deduct from your demo wallet.`))return;
+ try{const r=await api("/features.php",{method:"POST",body:JSON.stringify({action:"pay_bill",billType:type,accountReference:account,amount})});$("billForm").reset();await refresh();setStatus(`${type} demo payment recorded. Reference ${r.reference}. New available balance ${money(r.balance)} USDT.`)}
+ catch(err){setStatus(err.message)}
+});
+$("requestForm").addEventListener("submit",async e=>{
+ e.preventDefault();const amount=$("requestAmount").value;
+ try{const r=await api("/features.php",{method:"POST",body:JSON.stringify({action:"create_request",amount:amount?Number(amount):null,note:$("requestNote").value})});$("requestResult").hidden=false;$("requestResult").innerHTML=`<strong>Request created</strong><p>${escapeHTML(r.shareText)}</p><button type="button" id="copyNewRequest" class="secondary">Copy request text</button>`;$("copyNewRequest").onclick=()=>navigator.clipboard?.writeText(r.shareText).then(()=>setStatus("Payment request copied."));$("requestForm").reset();await refresh();setStatus("Payment request code created. Share the code with the payer.");}
+ catch(err){setStatus(err.message)}
+});
+$("requestHistory").addEventListener("click",e=>{
+ const code=e.target?.dataset?.copy;if(!code)return;
+ const text=`Thumela payment request ${code}`;
+ if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>setStatus("Request code copied."));
+ else setStatus(text,false);
+});
+function updateSplit(){
+ const total=Number($("splitTotal").value),people=Number($("splitPeople").value);
+ if(!Number.isFinite(total)||total<=0||!Number.isInteger(people)||people<2||people>50){$("splitResult").textContent="Enter a positive total and between 2 and 50 people.";return}
+ const each=Math.floor((total/people)*100)/100;
+ const remainder=Math.round((total-each*people)*100)/100;
+ $("splitResult").textContent=`Each person pays ${money(each)} USDT${remainder?`. The remaining ${money(remainder)} USDT can be added to one share.`:''}`;
+}
+$("splitTotal").addEventListener("input",updateSplit);$("splitPeople").addEventListener("input",updateSplit);
+
+$("runCommand").addEventListener("click",()=>parseCommand($("command").value));
+$("command").addEventListener("keydown",e=>{if(e.key==="Enter")parseCommand(e.target.value)});
+$("micButton").addEventListener("click",()=>{
+ if(voiceSession){stopVoiceSession("Voice conversation ended.");return}
+ const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SR){setStatus("This browser does not support speech recognition. Try a supported browser, enable microphone permission, or use your device screen reader.",true);return}
+ voiceSession=true;voiceBusy=false;
+ setStatus("Hello. I'm Thumela, your voice-first financial assistant. Ask me to check your balance, review transactions, prepare a payment, manage savings or pay a demo bill. What would you like to do?");
+});
+$("toggleTextMode").addEventListener("click",()=>{
+ const open=$("textMode").hidden;$("textMode").hidden=!open;
+ $("toggleTextMode").textContent=open?"Hide typing option":"Show typing option";
+ $("toggleTextMode").setAttribute("aria-expanded",String(open));if(open)$("command").focus();
+});
+$("authLanguage").addEventListener("change",()=>{
+ $("registerLanguage").value=$("authLanguage").value;
+ $("voiceLanguage").value=$("authLanguage").value;
+ applyLanguage();chooseVoice();
+});
+$("authSpeakHelp").addEventListener("click",()=>speak("Welcome to Thumela. To create an account, choose Create account. To sign in, enter your email address and password using your device screen reader or password manager. Do not speak your password aloud. After you sign in, press Start talking to Thumela to use the app by voice. You can ask for your balance, transaction history, prepare payments and manage savings. I will ask you to approve a financial action before it is recorded."));
+
+$("approvePayment").addEventListener("click",async()=>{
+ if(!state.pending)return;
+ try{
+  const {quote,recipient}=state.pending;
+  const result=await api("/payments.php",{method:"POST",body:JSON.stringify({quoteId:quote.quoteId,approved:true})});
+  state.pending=null;$("approvalModal").classList.remove("open");await refresh();
+  showPlan("Demo payment recorded",[tool("send_payment",`Backend accepted approved demo payment ${result.reference}.`),tool("verify_payment","Backend demo receipt status: confirmed. No blockchain was contacted."),"Wallet balance and activity refreshed from backend."],`Your demo payment of ${money(result.amount)} USDT to ${recipient.name} is recorded as confirmed in this prototype. Reference ${result.reference}. No real funds moved.`);
+ }catch(err){setStatus("The backend could not complete this demo payment. "+err.message)}
+});
+$("cancelPayment").addEventListener("click",()=>{state.pending=null;$("approvalModal").classList.remove("open");setStatus("Payment cancelled. No funds were moved.");});
+$("sendQuick").addEventListener("click",()=>{$("command").value="Send 25 USDT to Mum";parseCommand($("command").value)});
+$("balanceQuick").addEventListener("click",()=>parseCommand("Check my balance"));
+$("historyQuick").addEventListener("click",()=>parseCommand("Show my transaction history"));
+$("readPage").addEventListener("click",()=>speak("Welcome to your Thumela wallet, accessible agentic finance. You can speak or type a request. Choose your preferred voice language. You can send a demo payment to a saved recipient, check your balance, review activity, or propose a savings goal. All transactions are simulated."));
+$("stopSpeech").addEventListener("click",()=>{if(window.speechSynthesis)window.speechSynthesis.cancel();setStatus("Voice output stopped.",false)});
+async function saveVoicePreferences(){
+ try{await api("/auth.php",{method:"POST",body:JSON.stringify({action:"update_preferences",preferredLanguage:selectedLang(),voiceStyle:$("voiceStyle").value})});}
+ catch(err){setStatus("Could not save voice preferences: "+err.message,false)}
+}
+$("voiceLanguage").addEventListener("change",()=>{applyLanguage();chooseVoice();const lang=selectedLang();const found=!!selectedVoice;setStatus(found?`Voice preference updated. A ${lang} device voice is available.`:`Voice preference set to ${lang}. This device has no matching speech voice installed; your browser may use its default voice. Speech recognition support also depends on the browser.`,false);saveVoicePreferences()});
+$("voiceStyle").addEventListener("change",saveVoicePreferences);
+if(window.speechSynthesis)window.speechSynthesis.onvoiceschanged=chooseVoice;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("approvalModal").classList.contains("open"))$("cancelPayment").click()});
+async function showApp(){
+ $("authShell").hidden=true;$("appContent").hidden=false;$("topActions").hidden=false;
+ try{await refresh();chooseVoice();setStatus(`Welcome back, ${state.user.firstName}. Your personal Thumela wallet is ready. Press Start talking to Thumela when you are ready to speak.`,true)}
+ catch(e){state.user=null;$("appContent").hidden=true;$("authShell").hidden=false;$("topActions").hidden=true;setAuthMode("login");showAuthMessage(e.message,true)}
+}
+function showAuthMessage(message,isError=false){$("authMessage").className=isError?"auth-error":"auth-success";$("authMessage").textContent=message}
+function setAuthMode(mode){
+ const login=mode==="login";$("loginForm").classList.toggle("active",login);$("registerForm").classList.toggle("active",!login);
+ $("showLogin").classList.toggle("active",login);$("showRegister").classList.toggle("active",!login);
+ $("showLogin").setAttribute("aria-selected",String(login));$("showRegister").setAttribute("aria-selected",String(!login));$("authMessage").textContent="";
+}
+$("showLogin").addEventListener("click",()=>setAuthMode("login"));
+$("showRegister").addEventListener("click",()=>setAuthMode("register"));
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();const btn=e.submitter;btn.disabled=true;
+ try{await api("/auth.php",{method:"POST",body:JSON.stringify({action:"login",email:$("loginEmail").value,password:$("loginPassword").value})});await showApp()}
+ catch(err){showAuthMessage(err.message,true)}finally{btn.disabled=false}
+});
+$("registerForm").addEventListener("submit",async e=>{
+ e.preventDefault();const btn=e.submitter;btn.disabled=true;
+ try{await api("/auth.php",{method:"POST",body:JSON.stringify({action:"register",firstName:$("registerName").value,email:$("registerEmail").value,password:$("registerPassword").value,preferredLanguage:$("registerLanguage").value,voiceStyle:$("registerStyle").value})});await showApp()}
+ catch(err){showAuthMessage(err.message,true)}finally{btn.disabled=false}
+});
+$("logoutButton").addEventListener("click",async()=>{
+ try{await api("/auth.php",{method:"DELETE"});state={balance:0,recipients:[],history:[],pending:null,user:null};$("appContent").hidden=true;$("authShell").hidden=false;setAuthMode("login");$("loginPassword").value="";showAuthMessage("You have been logged out.");}
+ catch(err){setStatus("Could not log out: "+err.message,false)}
+});
+(async()=>{try{const profile=await api("/auth.php");if(profile.authenticated)await showApp();else{$("authShell").hidden=false;$("appContent").hidden=true}}catch(e){$("authShell").hidden=false;$("appContent").hidden=true;showAuthMessage("Cannot connect to PHP backend. Start Apache and MySQL, then import database/thumela.sql.",true)}})();
+</script>
+</body></html>
