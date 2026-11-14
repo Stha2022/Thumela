@@ -1,0 +1,55 @@
+THUMELA — ANDROID DEMONSTRATION BUILD
+
+PROJECT STATUS
+This package contains the redesigned Thumela web app and Capacitor configuration.
+The app is a local demonstration. Transfers are simulated and stored on the device.
+Mukuru is shown as the preferred remittance partner, but there is no Mukuru API,
+commercial agreement, live quote, account lookup, payout, or money movement.
+
+REDESIGN CHANGES
+- Mukuru is identified as the preferred remittance partner in the Send flow.
+- Transfer review explains that Mukuru is a demo preference only and is not contacted.
+- Speech output converts rand amounts into spoken English, for example:
+  R 2,000.00 -> "two thousand rand"
+  R 125.50 -> "one hundred twenty-five rand and fifty cents"
+- Existing accessible controls, screen-reader labels, voice commands, demo balance,
+  recipient management, transfer review, confirmation and history are retained.
+
+BUILD A DEBUG APK (WINDOWS OR MAC WITH ANDROID STUDIO)
+Requirements: Node.js LTS, Android Studio, Android SDK, and a supported JDK.
+1. Extract the Thumela_PHP_All_Features folder.
+2. Open a terminal in that folder.
+3. Run: npm install
+4. Run: npx cap add android
+   If the android folder already exists, skip this step.
+5. Run: npx cap sync android
+6. Run: npx cap open android
+7. Wait for Android Studio / Gradle sync and install any requested SDK components.
+8. Choose Build > Build Bundle(s) / APK(s) > Build APK(s).
+9. Android Studio normally writes the debug APK to:
+   android/app/build/outputs/apk/debug/app-debug.apk
+
+COMMAND-LINE BUILD
+After Android Studio has installed the SDK and generated the android project:
+  npx cap sync android
+  cd android
+  ./gradlew assembleDebug
+On Windows use:
+  gradlew.bat assembleDebug
+
+TESTING
+- Enable TalkBack and test every control and focus transition.
+- Test speech with the device's English (South Africa) voice if installed.
+- Check the spoken balance, fee, total, recipient payout and confirmation.
+- Confirm all screens and receipts state that transfers are simulated.
+- Test offline startup after the first load.
+
+IMPORTANT LIMITATIONS
+This environment does not have Android SDK / Android Studio / Gradle configured,
+so it cannot compile or sign an APK binary here. This delivery is the updated
+buildable source package, not an APK file.
+
+A real Mukuru integration requires Mukuru's approval, developer/API access,
+provider contract, production backend, security and privacy review, KYC/AML,
+fraud controls, regulatory assessment and end-to-end testing. Do not enter real
+financial credentials or treat a demo receipt as proof of payment.

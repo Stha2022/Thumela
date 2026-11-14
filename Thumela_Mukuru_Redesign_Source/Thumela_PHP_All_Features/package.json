@@ -1,0 +1,19 @@
+{
+  "name": "thumela-voice-first-demo",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Thumela voice-first South African remittance demo with Mukuru preference and spoken rand amounts",
+  "scripts": {
+    "android:add": "npx cap add android",
+    "android:sync": "npx cap sync android",
+    "android:open": "npx cap open android",
+    "android:build:debug": "npx cap sync android && cd android && gradlew assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/core": "^7.4.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.3"
+  }
+}
